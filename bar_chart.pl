@@ -13,8 +13,24 @@ use POSIX qw(floor ceil);
 use Data::Dumper qw(Dumper);
 use Cwd;
 
+# define ARGUMENTS passed from PERL command
 my ($CLIENT_CODE_ARG) = @ARGV;
 my $CLIENT_CODE = $CLIENT_CODE_ARG;
+# define different client doc type arrays
+# MSD
+my @msd_Admin_arr = ();
+my @msd_StudyLink_arr = ();
+my @msd_WorkAndIncome_arr = ();
+# MNRG
+my @mnrg_RSP_arr = ();
+my @mnrg_Meridian_arr = ();
+# STHX
+my @sthx_BRRS_arr = ();
+my @sthx_CareAdvantage_arr = ();
+my @sthx_AP_arr = ();
+my @sthx_Agency_arr = ();
+my @sthx_RSP_arr = ();
+my @sthx_SouthernCross_arr = ();
 
 # define graph object
 my $graph = GD::Graph::bars->new(1000, 1000);
@@ -145,7 +161,8 @@ sub print_array_content
 
 sub process_file_data
 {
-  my $filename = $_[0];
+  my $clientcode = $_[0];
+  my $filename = $_[1];
 
   # use the perl open function to open the file
   open(FILE_DATA, $filename) or die "Could not read from $filename, open file failed.";
@@ -160,11 +177,7 @@ sub process_file_data
     $line = $_;
     @fields_arr = split(/\|/, $line);
     print Dumper \@fields_arr;
-    #print @fields_arr."\n";
-    #$data_arr[0]=$field[0];
-    #$data_arr[1]=$field[1];
-    #$data_arr[2]=$field[2];
-    #$data_arr[3]=$field[3];
+    load_data($clientcode);
 
     foreach $one_field (@fields_arr){
       print "FIELD VALUE: ".$one_field."\n";
@@ -172,6 +185,35 @@ sub process_file_data
   }
 
   close FILE_DATA;
+}
+
+sub load_data
+{
+  my $clientcode = $_[0];
+  my $value = $_[1];
+  
+  if ($clientcode eq "MSD")
+  {
+    push (@msd_Admin_arr, $value);
+  }
+  elsif ($clientcode eq "MNRG")
+  {
+
+  }
+  elsif ($clientcode eq "STHX")
+  {
+    
+  }
+  elsif ($clientcode eq "FONT")
+  {
+    
+  }
+  elsif ($clientcode eq "TCL")
+  {
+    
+  }
+  else
+  {}
 }
 
 sub get_check_files 
@@ -316,7 +358,7 @@ foreach my $report_file (@report_files_arr)
   print "--------------------------"."\n";
   print $report_file."\n";
   print "--------------------------"."\n";
-  process_file_data($report_file);
+  process_file_data($CLIENT_CODE, $report_file);
 }
 
 #foreach (@report_files_arr) 
