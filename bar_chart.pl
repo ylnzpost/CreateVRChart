@@ -168,7 +168,7 @@ sub process_file_data
 	  $DOC_TYPE_VAL = $fields_arr[1];
 	  $BYTES_VAL = $fields_arr[5];
     }
-	load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, $BYTES_VAL);
+	load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
   }
 
   close FILE_DATA;
@@ -367,6 +367,18 @@ foreach my $report_file (@report_files_arr)
 	print $one_item."\n";
   }
   print "--------------------------"."\n";
+  print "[ msd_StudyLink_arr ]"."\n";
+  print "--------------------------"."\n";
+  foreach my $one_item (@msd_StudyLink_arr){
+	print $one_item."\n";
+  }
+  print "--------------------------"."\n";
+  print "[ msd_WorkAndIncome_arr ]"."\n";
+  print "--------------------------"."\n";
+  foreach my $one_item (@msd_WorkAndIncome_arr){
+	print $one_item."\n";
+  }
+  print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
@@ -380,7 +392,7 @@ chdir($pwd);
 my @report_data_labels_arr = ("Admin","StudyLink","Work And Income");
 my @report_data_arr = ();
 my $report_data_labels_arr_matrix = \@report_data_labels_arr;
-my $report_data_arr_matrix = \@report_data_arr;
+#my $report_data_arr_matrix = \@report_data_arr;
 #print Dumper $report_data_labels_arr_matrix;
 #print Dumper $report_data_arr_matrix;
 =start
@@ -391,12 +403,38 @@ my @data = (
   [ convert_bytes_roundup(34413973423), convert_bytes_roundup(1583691158306), convert_bytes_roundup(3830241681626) ]
 );
 =cut
+=start
 my @data = ( 
   $report_data_labels_arr_matrix,
   [ convert_bytes_roundup(33816522601), convert_bytes_roundup(34130361462), convert_bytes_roundup(34413973423) ],
   [ convert_bytes_roundup(1555073714334), convert_bytes_roundup(1567262065125), convert_bytes_roundup(1583691158306) ],
   [ convert_bytes_roundup(3720421023591), convert_bytes_roundup(3792789686833), convert_bytes_roundup(3830241681626) ]
 );
+=cut
+=start
+my @data = ( 
+  $report_data_labels_arr_matrix,
+  [ convert_bytes_roundup(33816522601), convert_bytes_roundup(34130361462), convert_bytes_roundup(34413973423) ],
+  [ convert_bytes_roundup(1555073714334), convert_bytes_roundup(1567262065125), convert_bytes_roundup(1583691158306) ],
+  [ convert_bytes_roundup(3720421023591), convert_bytes_roundup(3792789686833), convert_bytes_roundup(3830241681626) ]
+);
+=cut
+my @data;
+# -----------------------------------------------------------
+# MSD
+# -----------------------------------------------------------
+my $msd_Admin_arr_matrix = \@msd_Admin_arr;
+my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
+my $msd_WorkAndIncome_arr_matrix = \@msd_WorkAndIncome_arr;
+# -----------------------------------------------------------
+@data = ( 
+  $report_data_labels_arr_matrix,
+  $msd_Admin_arr_matrix,
+  $msd_StudyLink_arr_matrix,
+  $msd_WorkAndIncome_arr_matrix
+);
+# -----------------------------------------------------------
+
 print "----------------------"."\n";
 print Dumper @data;
 print "----------------------"."\n";
@@ -411,23 +449,6 @@ print "----------------------"."\n";
 #print (nearest(.01, convert_bytes(1555073714334))."\n");
 #print ("TOTAL: ".(convert_bytes_roundup(1555073714334))."\n");
 
-# msd test data
-=start
-my @data = ( 
-  ["1st","2nd","3rd","4th","5th","6th","7th", "8th", "9th"],
-  [ 10, 20, 50, 60, 30, 35, 45, 32, 43],
-  [ 50, 30, 80, 10, 80, 70, 90, 45, 58 ],
-  [ 30, 20, 60, 15, 60, 72, 20, 25, 68 ]
-);
-=cut
-=start
-my @data = ( 
-  ["Admin","StudyLink","Work And Income"],
-  [ 3381652260, 1555073714334, 3720421023591 ],
-  [ 3413036146, 1567262065125, 3792789686833 ],
-  [ 3441397342, 1583691158306, 3830241681626 ]
-);
-=cut
 $graph->set( 
   x_label           => 'X Axis',
   y_label           => 'Y Axis',
