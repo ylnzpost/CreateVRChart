@@ -177,10 +177,10 @@ sub process_file_data
     $line = $_;
     @fields_arr = split(/\|/, $line);
     print Dumper \@fields_arr;
-    load_data($clientcode);
 
     foreach $one_field (@fields_arr){
       print "FIELD VALUE: ".$one_field."\n";
+	  //
     }
   }
 
@@ -191,10 +191,24 @@ sub load_data
 {
   my $clientcode = $_[0];
   my $value = $_[1];
+  my $doctype = $_[2];
   
   if ($clientcode eq "MSD")
   {
-    push (@msd_Admin_arr, $value);
+	if ($doctype eq "Admin")
+	{
+		push (@msd_Admin_arr, $value);
+	}
+	elsif ($doctype eq "StudyLink")
+	{
+		push (@msd_StudyLink_arr, $value);
+	}
+	elsif ($doctype eq "Work And Income")
+	{
+		push (@msd_WorkAndIncome_arr, $value);
+	}
+	else
+	{}
   }
   elsif ($clientcode eq "MNRG")
   {
