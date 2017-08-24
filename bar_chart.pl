@@ -132,24 +132,6 @@ sub convert_bytes_roundup {
 	else
 	{}
 }
-=start
-sub print_deep_array($)
-{
-    my $arrRef = shift;
-    for (my $i = 0; $i < scalar(@$arrRef); ++$i) {
-        if (ref($arrRef->[$i]) eq 'ARRAY') {
-            print ', ' if ($i);
-            print '[';
-            print_deep_array($arrRef->[$i]);
-            print ']';
-        } else {
-            print ', ' if ($i);
-            print $arrRef->[$i];
-        }
-    }
-    print ' ' if (!scalar(@$arrRef));
-}
-=cut
 
 sub print_array_content
 {
@@ -170,18 +152,23 @@ sub process_file_data
   my @fields_arr;
   my @data_arr;
   my $line;
-  my $one_field;
 
   while(<FILE_DATA>){
     chomp;
     $line = $_;
     @fields_arr = split(/\|/, $line);
     print Dumper \@fields_arr;
-
-    foreach $one_field (@fields_arr){
+	my $CLIENT_CODE_VAL;
+	my $DOC_TYPE_VAL;
+	my $BYTES_VAL;
+	
+    foreach my $one_field (@fields_arr){
       print "FIELD VALUE: ".$one_field."\n";
-	  //
+	  $CLIENT_CODE_VAL = $fields_arr[0];
+	  $DOC_TYPE_VAL = $fields_arr[1];
+	  $BYTES_VAL = $fields_arr[5];
     }
+	load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, $BYTES_VAL);
   }
 
   close FILE_DATA;
@@ -190,8 +177,8 @@ sub process_file_data
 sub load_data
 {
   my $clientcode = $_[0];
-  my $value = $_[1];
-  my $doctype = $_[2];
+  my $doctype = $_[1];
+  my $value = $_[2];
   
   if ($clientcode eq "MSD")
   {
@@ -373,6 +360,13 @@ foreach my $report_file (@report_files_arr)
   print $report_file."\n";
   print "--------------------------"."\n";
   process_file_data($CLIENT_CODE, $report_file);
+  print "--------------------------"."\n";
+  print "[ msd_Admin_arr ]"."\n";
+  print "--------------------------"."\n";
+  foreach my $one_item (@msd_Admin_arr){
+	print $one_item."\n";
+  }
+  print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
