@@ -389,9 +389,10 @@ foreach my $report_file (@report_files_arr)
 # go back to original directory
 chdir($pwd);
 
-my @report_data_labels_arr = ("Admin","StudyLink","Work And Income");
+my @report_data_labels_arr = ();
 my @report_data_arr = ();
-my $report_data_labels_arr_matrix = \@report_data_labels_arr;
+my $report_data_labels_arr_matrix = [];
+#my $report_data_labels_arr_matrix = \@report_data_labels_arr;
 #my $report_data_arr_matrix = \@report_data_arr;
 #print Dumper $report_data_labels_arr_matrix;
 #print Dumper $report_data_arr_matrix;
@@ -423,6 +424,7 @@ my @data;
 # -----------------------------------------------------------
 # MSD
 # -----------------------------------------------------------
+my $report_data_labels_arr_matrix = \@MSD_DOC_TYPES;
 my $msd_Admin_arr_matrix = \@msd_Admin_arr;
 my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
 my $msd_WorkAndIncome_arr_matrix = \@msd_WorkAndIncome_arr;
@@ -457,6 +459,9 @@ $graph->set(
   y_tick_number     => 500,
   y_label_skip      => 50 
 ) or die $graph->error;
+
+#$graph->set_legend_font(GD::gdFontTiny);
+$graph->set_legend("Admin", "StudyLink", "Work And Income");
 
 my $gd = $graph->plot(\@data) or die $graph->error;
 
