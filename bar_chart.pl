@@ -41,6 +41,7 @@ my @CLIENTS_ARR = ("MSD", "MNRG", "STHX", "FONT", "TCL");
 my @MSD_DOC_TYPES = ("Admin", "StudyLink", "Work And Income");
 my @MNRG_DOC_TYPES = ("Meridian RSP", "Meridian");
 my @STHX_DOC_TYPES = ("BRRS", "Care Advantage", "Southern Cross AP", "Southern Cross Agency", "Southern Cross RSP", "Southern Cross");
+my @REPORT_DATES = ();
 my %HASH_DOC_TYPES=("MSD" => [@MSD_DOC_TYPES], "MNRG" => [@MNRG_DOC_TYPES], "STHX" => [@STHX_DOC_TYPES]);
 =start
 foreach my $key (@CLIENTS_ARR) 
@@ -141,85 +142,91 @@ sub print_array_content
 	}
 }
 
-sub process_file_data
-{
-  my $clientcode = $_[0];
-  my $filename = $_[1];
-
-  # use the perl open function to open the file
-  open(FILE_DATA, $filename) or die "Could not read from $filename, open file failed.";
-
-  my @fields_arr;
-  my @data_arr;
-  my $line;
-
-  while(<FILE_DATA>){
-    chomp;
-    $line = $_;
-    @fields_arr = split(/\|/, $line);
-    print Dumper \@fields_arr;
-	my $CLIENT_CODE_VAL;
-	my $DOC_TYPE_VAL;
-	my $BYTES_VAL;
+sub process_file_data {
+	my $clientcode = $_[0];
+	my $filename = $_[1];
 	
-    foreach my $one_field (@fields_arr){
-      print "FIELD VALUE: ".$one_field."\n";
-	  $CLIENT_CODE_VAL = $fields_arr[0];
-	  $DOC_TYPE_VAL = $fields_arr[1];
-	  $BYTES_VAL = $fields_arr[5];
-    }
-	load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
-  }
+	my $report_name = basename($filename, ".report");
+	my $date_range = substr($report_name, 0, 21);
+	print "--------------------------"."\n";
+	print "[ DATE RANGE ]"."\n";
+	print "--------------------------"."\n";
+	print $date_range."\n";
+	print "--------------------------"."\n";
+	push(@REPORT_DATES, $date_range);
+	
+	# use the perl open function to open the file
+	open(FILE_DATA, $filename) or die "Could not read from $filename, open file failed.";
 
-  close FILE_DATA;
+	my @fields_arr;
+	my @data_arr;
+	my $line;
+
+	while(<FILE_DATA>){
+		chomp;
+		$line = $_;
+		@fields_arr = split(/\|/, $line);
+		print Dumper \@fields_arr;
+		my $CLIENT_CODE_VAL;
+		my $DOC_TYPE_VAL;
+		my $BYTES_VAL;
+
+		foreach my $one_field (@fields_arr){
+		  print "FIELD VALUE: ".$one_field."\n";
+		  $CLIENT_CODE_VAL = $fields_arr[0];
+		  $DOC_TYPE_VAL = $fields_arr[1];
+		  $BYTES_VAL = $fields_arr[5];
+		}
+		load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
+	}
+	close FILE_DATA;
 }
 
-sub load_data
-{
-  my $clientcode = $_[0];
-  my $doctype = $_[1];
-  my $value = $_[2];
-  
-  if ($clientcode eq "MSD")
-  {
-	if ($doctype eq "Admin")
+sub load_data {
+	my $clientcode = $_[0];
+	my $doctype = $_[1];
+	my $value = $_[2];
+
+	if ($clientcode eq "MSD")
 	{
-		push (@msd_Admin_arr, $value);
+		if ($doctype eq "Admin")
+		{
+			push (@msd_Admin_arr, $value);
+		}
+		elsif ($doctype eq "StudyLink")
+		{
+			push (@msd_StudyLink_arr, $value);
+		}
+		elsif ($doctype eq "Work And Income")
+		{
+			push (@msd_WorkAndIncome_arr, $value);
+		}
+		else
+		{}
 	}
-	elsif ($doctype eq "StudyLink")
+	elsif ($clientcode eq "MNRG")
 	{
-		push (@msd_StudyLink_arr, $value);
+
 	}
-	elsif ($doctype eq "Work And Income")
+	elsif ($clientcode eq "STHX")
 	{
-		push (@msd_WorkAndIncome_arr, $value);
+
+	}
+	elsif ($clientcode eq "FONT")
+	{
+
+	}
+	elsif ($clientcode eq "TCL")
+	{
+
 	}
 	else
 	{}
-  }
-  elsif ($clientcode eq "MNRG")
-  {
-
-  }
-  elsif ($clientcode eq "STHX")
-  {
-    
-  }
-  elsif ($clientcode eq "FONT")
-  {
-    
-  }
-  elsif ($clientcode eq "TCL")
-  {
-    
-  }
-  else
-  {}
 }
 
 sub get_check_files 
 {
-    # Return full paths of all files in single directory
+	# Return full paths of all files in single directory
     #my ($check_dir_path) = @_;   
     my $check_dir_path = $_[0];
     my $SEARCH_CLIENT_CODE = $_[1];
@@ -294,20 +301,20 @@ sub get_check_files
 
 sub LTrim
 {
-  my $s = shift; $s =~ s/^\s+//;
-  return $s;
+	my $s = shift; $s =~ s/^\s+//;
+	return $s;
 };
 
 sub RTrim
 {
-  my $s = shift; $s =~ s/\s+$//;
-  return $s;
+	my $s = shift; $s =~ s/\s+$//;
+	return $s;
 };
 
 sub Trim
 {
-  my $s = shift; $s =~ s/^\s+|\s+$//g;
-  return $s;
+	my $s = shift; $s =~ s/^\s+|\s+$//g;
+	return $s;
 };
 
 sub without_ext {
@@ -322,22 +329,22 @@ sub ext_only {
 
 sub StringContains
 {
-  #my ($arr_parm) = @_; 
-  my $string = $_[0];
-  my $substring = $_[1];
-  if (index($string, $substring) != -1) {
-    print $string." contains ".$substring."\n";
-  }
+	#my ($arr_parm) = @_; 
+	my $string = $_[0];
+	my $substring = $_[1];
+	if (index($string, $substring) != -1) {
+	print $string." contains ".$substring."\n";
+	}
 }
 
 sub IsStringContains
 {
-  my $string = $_[0];
-  my $substring = $_[1];
-  if (index($string, $substring) != -1) {
-    return 1;
-  }
-  return 0;
+	my $string = $_[0];
+	my $substring = $_[1];
+	if (index($string, $substring) != -1) {
+	return 1;
+	}
+	return 0;
 }
 
 # get current directory
@@ -354,31 +361,31 @@ my $CHECK_DIR = Trim($reports_dir);
 my @report_files_arr = get_check_files($CHECK_DIR, $CLIENT_CODE);
 foreach my $report_file (@report_files_arr)
 {
-  print "--------------------------"."\n";
-  print "PROCESSING REPORT FILE"."\n";
-  print "--------------------------"."\n";
-  print $report_file."\n";
-  print "--------------------------"."\n";
-  process_file_data($CLIENT_CODE, $report_file);
-  print "--------------------------"."\n";
-  print "[ msd_Admin_arr ]"."\n";
-  print "--------------------------"."\n";
-  foreach my $one_item (@msd_Admin_arr){
+	print "--------------------------"."\n";
+	print "PROCESSING REPORT FILE"."\n";
+	print "--------------------------"."\n";
+	print $report_file."\n";
+	print "--------------------------"."\n";
+	process_file_data($CLIENT_CODE, $report_file);
+	print "--------------------------"."\n";
+	print "[ msd_Admin_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@msd_Admin_arr){
 	print $one_item."\n";
-  }
-  print "--------------------------"."\n";
-  print "[ msd_StudyLink_arr ]"."\n";
-  print "--------------------------"."\n";
-  foreach my $one_item (@msd_StudyLink_arr){
+	}
+	print "--------------------------"."\n";
+	print "[ msd_StudyLink_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@msd_StudyLink_arr){
 	print $one_item."\n";
-  }
-  print "--------------------------"."\n";
-  print "[ msd_WorkAndIncome_arr ]"."\n";
-  print "--------------------------"."\n";
-  foreach my $one_item (@msd_WorkAndIncome_arr){
+	}
+	print "--------------------------"."\n";
+	print "[ msd_WorkAndIncome_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@msd_WorkAndIncome_arr){
 	print $one_item."\n";
-  }
-  print "--------------------------"."\n";
+	}
+	print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
@@ -424,7 +431,8 @@ my @data;
 # -----------------------------------------------------------
 # MSD
 # -----------------------------------------------------------
-my $report_data_labels_arr_matrix = \@MSD_DOC_TYPES;
+#my $report_data_labels_arr_matrix = \@MSD_DOC_TYPES;
+my $report_data_labels_arr_matrix = \@REPORT_DATES;
 my $msd_Admin_arr_matrix = \@msd_Admin_arr;
 my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
 my $msd_WorkAndIncome_arr_matrix = \@msd_WorkAndIncome_arr;
