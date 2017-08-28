@@ -454,18 +454,18 @@ print "----------------------"."\n";
 $graph->set( 
   x_label           => 'X Axis',
   y_label           => 'Y Axis',
-  title             => 'Simple Graph Sample',
+  title             => 'MSD Graph Sample',
   y_max_value       => 5000,
   y_tick_number     => 500,
   y_label_skip      => 50 
 ) or die $graph->error;
 
 #$graph->set_legend_font(GD::gdFontTiny);
-$graph->set_legend("Admin", "StudyLink", "Work And Income");
+$graph->set_legend("Admin", "StudyLink", "Work And Income", "4", "5", "6", "7");
 
 my $gd = $graph->plot(\@data) or die $graph->error;
 
-open(IMG, '>msd_report_bar_chart_01.png') or die $!;
+open(IMG, '>msd_report_bar_chart.png') or die $!;
 binmode IMG;
 print IMG $gd->png;
 close IMG;
