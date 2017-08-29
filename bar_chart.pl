@@ -571,10 +571,12 @@ print "--------------------------"."\n";
 $graph->set( 
   x_label           => 'X Axis',
   y_label           => 'Y Axis',
-  title             => 'MSD Graph Sample',
+  title             => $CLIENT_CODE.' Graph and Chart',
   y_max_value       => 5000,
   y_tick_number     => 500,
-  y_label_skip      => 50 
+  y_label_skip      => 50,
+  dclrs       		=> ['blue', 'green', 'cyan', 'red', 'yellow', 'orange'],
+  show_values		=> 1
 ) or die $graph->error;
 
 #$graph->set_legend_font(GD::gdFontTiny);
