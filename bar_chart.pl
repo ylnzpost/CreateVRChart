@@ -210,7 +210,32 @@ sub load_data {
 	}
 	elsif ($clientcode eq "STHX")
 	{
-
+		if ($doctype eq "BRRS")
+		{
+			push (@sthx_BRRS_arr, $value);
+		}
+		elsif ($doctype eq "Care Advantage")
+		{
+			push (@sthx_CareAdvantage_arr, $value);
+		}
+		elsif ($doctype eq "Southern Cross")
+		{
+			push (@sthx_SouthernCross_arr, $value);
+		}
+		elsif ($doctype eq "Southern Cross Agency")
+		{
+			push (@sthx_Agency_arr, $value);
+		}
+		elsif ($doctype eq "Southern Cross AP")
+		{
+			push (@sthx_AP_arr, $value);
+		}
+		elsif ($doctype eq "Southern Cross RSP")
+		{
+			push (@sthx_RSP_arr, $value);
+		}
+		else
+		{}
 	}
 	elsif ($clientcode eq "FONT")
 	{
@@ -386,6 +411,42 @@ foreach my $report_file (@report_files_arr)
 		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
+	print "[ sthx_BRRS_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_BRRS_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ sthx_CareAdvantage_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_CareAdvantage_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ sthx_AP_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_AP_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ sthx_Agency_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_Agency_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ sthx_RSP_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_RSP_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ sthx_SouthernCross_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@sthx_SouthernCross_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
@@ -429,30 +490,78 @@ my @data = (
 =cut
 my @data;
 # -----------------------------------------------------------
-# MSD
+# different clients
 # -----------------------------------------------------------
-#my $report_data_labels_arr_matrix = \@MSD_DOC_TYPES;
 my $report_data_labels_arr_matrix = \@REPORT_DATES;
+# MSD
 my $msd_Admin_arr_matrix = \@msd_Admin_arr;
 my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
 my $msd_WorkAndIncome_arr_matrix = \@msd_WorkAndIncome_arr;
-# -----------------------------------------------------------
-@data = ( 
-  $report_data_labels_arr_matrix,
-  $msd_Admin_arr_matrix,
-  $msd_StudyLink_arr_matrix,
-  $msd_WorkAndIncome_arr_matrix
-);
-# -----------------------------------------------------------
+# STHX
+my $sthx_BRRS_arr_matrix = \@sthx_BRRS_arr;
+my $sthx_CareAdvantage_arr_matrix = \@sthx_CareAdvantage_arr;
+my $sthx_AP_arr_matrix = \@sthx_AP_arr;
+my $sthx_Agency_arr_matrix = \@sthx_Agency_arr;
+my $sthx_RSP_arr_matrix = \@sthx_RSP_arr;
+my $sthx_SouthernCross_arr_matrix = \@sthx_SouthernCross_arr;
+# ---------------------------------------------------------
+if ($CLIENT_CODE eq "MSD")
+{
+	# -----------------------------------------------------
+	# MSD data
+	# -----------------------------------------------------
+	@data = ( 
+	  $report_data_labels_arr_matrix,
+	  $msd_Admin_arr_matrix,
+	  $msd_StudyLink_arr_matrix,
+	  $msd_WorkAndIncome_arr_matrix
+	);
+}
+elsif ($CLIENT_CODE eq "STHX")
+{
+	# -----------------------------------------------------
+	# STHX data
+	# -----------------------------------------------------
+	@data = ( 
+	  $report_data_labels_arr_matrix,
+	  $sthx_BRRS_arr_matrix,
+	  $sthx_CareAdvantage_arr_matrix,
+	  $sthx_AP_arr_matrix,
+	  $sthx_Agency_arr_matrix,
+	  $sthx_RSP_arr_matrix,
+	  $sthx_SouthernCross_arr_matrix
+	);
+}
+elsif ($CLIENT_CODE eq "MNRG")
+{
+	# -----------------------------------------------------
+	# MNRG data
+	# -----------------------------------------------------
+}
+elsif ($CLIENT_CODE eq "FONT")
+{
+	# -----------------------------------------------------
+	# FONT data
+	# -----------------------------------------------------
+}
+elsif ($CLIENT_CODE eq "TCL")
+{
+	# -----------------------------------------------------
+	# TCL data
+	# -----------------------------------------------------
+}
+else
+{}
+# ---------------------------------------------------------
 
-print "----------------------"."\n";
+print "--------------------------"."\n";
 print Dumper @data;
-print "----------------------"."\n";
+print "--------------------------"."\n";
 my $chart_data_matrix = \@data;
 print Dumper $chart_data_matrix;
-print "----------------------"."\n";
+print "--------------------------"."\n";
 print_array_content(@data);
-print "----------------------"."\n";
+print "--------------------------"."\n";
 #print (size_in_kb(1555073714334)." KB "."\n");
 #print (size_in_mb(1555073714334)." MB "."\n");
 #print (size_in_gb(1555073714334)." GB "."\n");
@@ -469,7 +578,23 @@ $graph->set(
 ) or die $graph->error;
 
 #$graph->set_legend_font(GD::gdFontTiny);
-$graph->set_legend("Admin", "StudyLink", "Work And Income", "4", "5", "6", "7");
+if ($CLIENT_CODE eq "MSD")
+{
+	$graph->set_legend
+		("Admin", "StudyLink", "Work And Income");
+}
+elsif ($CLIENT_CODE eq "STHX")
+{
+	$graph->set_legend
+		("BRRS", 
+		"Care Advantage", 
+		"Southern Cross", 
+		"Southern Cross Agency", 
+		"Southern Cross AP", 
+		"Southern Cross RSP");
+}
+else
+{}
 
 my $gd = $graph->plot(\@data) or die $graph->error;
 my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
