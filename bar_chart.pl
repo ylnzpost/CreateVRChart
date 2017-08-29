@@ -35,6 +35,15 @@ my @sthx_SouthernCross_arr = ();
 
 # define graph object
 my $graph = GD::Graph::bars->new(1000, 1000);
+my @colours = 
+	('blue', 
+	'green', 
+	'cyan', 
+	'yellow', 
+	'purple',
+	'orange',
+	'red',
+	'gray');
 # --------------------------------------------------
 # define array objects for different document types
 # --------------------------------------------------
@@ -218,10 +227,6 @@ sub load_data {
 		{
 			push (@sthx_CareAdvantage_arr, $value);
 		}
-		elsif ($doctype eq "Southern Cross")
-		{
-			push (@sthx_SouthernCross_arr, $value);
-		}
 		elsif ($doctype eq "Southern Cross Agency")
 		{
 			push (@sthx_Agency_arr, $value);
@@ -233,6 +238,10 @@ sub load_data {
 		elsif ($doctype eq "Southern Cross RSP")
 		{
 			push (@sthx_RSP_arr, $value);
+		}
+		elsif ($doctype eq "Southern Cross")
+		{
+			push (@sthx_SouthernCross_arr, $value);
 		}
 		else
 		{}
@@ -575,7 +584,7 @@ $graph->set(
   y_max_value       => 5000,
   y_tick_number     => 500,
   y_label_skip      => 50,
-  dclrs       		=> ['blue', 'green', 'cyan', 'red', 'yellow', 'orange'],
+  dclrs       		=> [@colours],
   show_values		=> 1
 ) or die $graph->error;
 
@@ -589,11 +598,11 @@ elsif ($CLIENT_CODE eq "STHX")
 {
 	$graph->set_legend
 		("BRRS", 
-		"Care Advantage", 
-		"Southern Cross", 
+		"Care Advantage",
 		"Southern Cross Agency", 
 		"Southern Cross AP", 
-		"Southern Cross RSP");
+		"Southern Cross RSP",
+		"Southern Cross");
 }
 else
 {}
