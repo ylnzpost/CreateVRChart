@@ -3,6 +3,7 @@
 use strict;
 use GD;
 use GD::Graph::bars;
+use GD::Graph::Data;
 use Math::Round;
 use IO::Handle;
 use File::Stat;
@@ -143,8 +144,7 @@ sub print_array_content
 }
 
 sub process_file_data {
-	my $clientcode = $_[0];
-	my $filename = $_[1];
+	my $filename = $_[0];
 	
 	my $report_name = basename($filename, ".report");
 	my $date_range = substr($report_name, 0, 21);
@@ -366,24 +366,24 @@ foreach my $report_file (@report_files_arr)
 	print "--------------------------"."\n";
 	print $report_file."\n";
 	print "--------------------------"."\n";
-	process_file_data($CLIENT_CODE, $report_file);
+	process_file_data($report_file);
 	print "--------------------------"."\n";
 	print "[ msd_Admin_arr ]"."\n";
 	print "--------------------------"."\n";
 	foreach my $one_item (@msd_Admin_arr){
-	print $one_item."\n";
+		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
 	print "[ msd_StudyLink_arr ]"."\n";
 	print "--------------------------"."\n";
 	foreach my $one_item (@msd_StudyLink_arr){
-	print $one_item."\n";
+		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
 	print "[ msd_WorkAndIncome_arr ]"."\n";
 	print "--------------------------"."\n";
 	foreach my $one_item (@msd_WorkAndIncome_arr){
-	print $one_item."\n";
+		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
 }
@@ -472,8 +472,14 @@ $graph->set(
 $graph->set_legend("Admin", "StudyLink", "Work And Income", "4", "5", "6", "7");
 
 my $gd = $graph->plot(\@data) or die $graph->error;
+my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
 
-open(IMG, '>msd_report_bar_chart.png') or die $!;
-binmode IMG;
-print IMG $gd->png;
-close IMG;
+#open(IMG, '>msd_report_bar_chart.png') or die $!;
+#binmode IMG;
+#print IMG $gd->png;
+#close IMG;
+
+open(my $IMAGE_OUT, '>', $IMAGE_FILE) or die "Cannot open ".$IMAGE_FILE." for write: $!";
+binmode $IMAGE_OUT;
+print $IMAGE_OUT $graph->gd->png;
+close $IMAGE_OUT;
