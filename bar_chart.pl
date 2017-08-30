@@ -32,6 +32,10 @@ my @sthx_AP_arr = ();
 my @sthx_Agency_arr = ();
 my @sthx_RSP_arr = ();
 my @sthx_SouthernCross_arr = ();
+# FONT
+my @font_HRDocuments_arr = ();
+my @font_SupplierDocumentsRSP_arr = ();
+my @font_SupplierDocuments_arr = ();
 
 # define graph object
 my $graph = GD::Graph::bars->new(1000, 1000);
@@ -257,7 +261,20 @@ sub load_data {
 	}
 	elsif ($clientcode eq "FONT")
 	{
-
+		if ($doctype eq "HR Documents")
+		{
+			push (@font_HRDocuments_arr, $value);
+		}
+		elsif ($doctype eq "Supplier Documents RSP")
+		{
+			push (@font_SupplierDocumentsRSP_arr, $value);
+		}
+		elsif ($doctype eq "Supplier Documents")
+		{
+			push (@font_SupplierDocuments_arr, $value);
+		}
+		else
+		{}
 	}
 	elsif ($clientcode eq "TCL")
 	{
@@ -477,6 +494,24 @@ foreach my $report_file (@report_files_arr)
 		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
+	print "[ font_HRDocuments_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@font_HRDocuments_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ font_SupplierDocumentsRSP_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@font_SupplierDocumentsRSP_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ font_SupplierDocuments_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@font_SupplierDocuments_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
@@ -513,6 +548,10 @@ my $sthx_SouthernCross_arr_matrix = \@sthx_SouthernCross_arr;
 # MNRG
 my $mnrg_RSP_arr_matrix = \@mnrg_RSP_arr;
 my $mnrg_Meridian_arr_matrix = \@mnrg_Meridian_arr;
+# FONT
+my $font_HRDocuments_arr_matrix = \@font_HRDocuments_arr;
+my $font_SupplierDocumentsRSP_arr_matrix = \@font_SupplierDocumentsRSP_arr;
+my $font_SupplierDocuments_arr_matrix = \@font_SupplierDocuments_arr;
 # ---------------------------------------------------------
 if ($CLIENT_CODE eq "MSD")
 {
@@ -557,6 +596,12 @@ elsif ($CLIENT_CODE eq "FONT")
 	# -----------------------------------------------------
 	# FONT data
 	# -----------------------------------------------------
+	@data = ( 
+	  $report_data_labels_arr_matrix,
+	  $font_HRDocuments_arr_matrix,
+	  $font_SupplierDocumentsRSP_arr_matrix,
+	  $font_SupplierDocuments_arr_matrix
+	);
 }
 elsif ($CLIENT_CODE eq "TCL")
 {
@@ -613,6 +658,11 @@ elsif ($CLIENT_CODE eq "MNRG")
 {
 	$graph->set_legend
 		("Meridian RSP", "Meridian");
+}
+elsif ($CLIENT_CODE eq "FONT")
+{
+	$graph->set_legend
+		("HR Documents", "Supplier Documents RSP", "Supplier Documents");
 }
 else
 {}
