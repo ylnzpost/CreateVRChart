@@ -215,7 +215,16 @@ sub load_data {
 	}
 	elsif ($clientcode eq "MNRG")
 	{
-
+		if ($doctype eq "Meridian RSP")
+		{
+			push (@mnrg_RSP_arr, $value);
+		}
+		elsif ($doctype eq "Meridian")
+		{
+			push (@mnrg_Meridian_arr, $value);
+		}
+		else
+		{}
 	}
 	elsif ($clientcode eq "STHX")
 	{
@@ -456,6 +465,18 @@ foreach my $report_file (@report_files_arr)
 		print $one_item."\n";
 	}
 	print "--------------------------"."\n";
+	print "[ mnrg_RSP_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@mnrg_RSP_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
+	print "[ mnrg_Meridian_arr ]"."\n";
+	print "--------------------------"."\n";
+	foreach my $one_item (@mnrg_Meridian_arr){
+		print $one_item."\n";
+	}
+	print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
@@ -473,30 +494,6 @@ my $report_data_labels_arr_matrix = [];
 #my $report_data_arr_matrix = \@report_data_arr;
 #print Dumper $report_data_labels_arr_matrix;
 #print Dumper $report_data_arr_matrix;
-=start
-my @data = ( 
-  $report_data_labels_arr_matrix,
-  [ convert_bytes_roundup(33816522601), convert_bytes_roundup(1555073714334), convert_bytes_roundup(3720421023591) ],
-  [ convert_bytes_roundup(34130361462), convert_bytes_roundup(1567262065125), convert_bytes_roundup(3792789686833) ],
-  [ convert_bytes_roundup(34413973423), convert_bytes_roundup(1583691158306), convert_bytes_roundup(3830241681626) ]
-);
-=cut
-=start
-my @data = ( 
-  $report_data_labels_arr_matrix,
-  [ convert_bytes_roundup(33816522601), convert_bytes_roundup(34130361462), convert_bytes_roundup(34413973423) ],
-  [ convert_bytes_roundup(1555073714334), convert_bytes_roundup(1567262065125), convert_bytes_roundup(1583691158306) ],
-  [ convert_bytes_roundup(3720421023591), convert_bytes_roundup(3792789686833), convert_bytes_roundup(3830241681626) ]
-);
-=cut
-=start
-my @data = ( 
-  $report_data_labels_arr_matrix,
-  [ convert_bytes_roundup(33816522601), convert_bytes_roundup(34130361462), convert_bytes_roundup(34413973423) ],
-  [ convert_bytes_roundup(1555073714334), convert_bytes_roundup(1567262065125), convert_bytes_roundup(1583691158306) ],
-  [ convert_bytes_roundup(3720421023591), convert_bytes_roundup(3792789686833), convert_bytes_roundup(3830241681626) ]
-);
-=cut
 my @data;
 # -----------------------------------------------------------
 # different clients
@@ -513,6 +510,9 @@ my $sthx_AP_arr_matrix = \@sthx_AP_arr;
 my $sthx_Agency_arr_matrix = \@sthx_Agency_arr;
 my $sthx_RSP_arr_matrix = \@sthx_RSP_arr;
 my $sthx_SouthernCross_arr_matrix = \@sthx_SouthernCross_arr;
+# MNRG
+my $mnrg_RSP_arr_matrix = \@mnrg_RSP_arr;
+my $mnrg_Meridian_arr_matrix = \@mnrg_Meridian_arr;
 # ---------------------------------------------------------
 if ($CLIENT_CODE eq "MSD")
 {
@@ -546,6 +546,11 @@ elsif ($CLIENT_CODE eq "MNRG")
 	# -----------------------------------------------------
 	# MNRG data
 	# -----------------------------------------------------
+	@data = ( 
+	  $report_data_labels_arr_matrix,
+	  $mnrg_RSP_arr_matrix,
+	  $mnrg_Meridian_arr_matrix
+	);
 }
 elsif ($CLIENT_CODE eq "FONT")
 {
@@ -603,6 +608,11 @@ elsif ($CLIENT_CODE eq "STHX")
 		"Southern Cross AP", 
 		"Southern Cross RSP",
 		"Southern Cross");
+}
+elsif ($CLIENT_CODE eq "MNRG")
+{
+	$graph->set_legend
+		("Meridian RSP", "Meridian");
 }
 else
 {}
