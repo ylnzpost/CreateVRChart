@@ -15,8 +15,15 @@ use Data::Dumper qw(Dumper);
 use Cwd;
 
 # define ARGUMENTS passed from PERL command
-my ($CLIENT_CODE_ARG) = @ARGV;
+my ($CLIENT_CODE_ARG, $REPORT_ALL_ARG) = @ARGV;
 my $CLIENT_CODE = $CLIENT_CODE_ARG;
+my $REPORT_ALL = $REPORT_ALL_ARG;
+print "----------------------"."\n";
+print "[ SCRIPT ARGS ]"."\n";
+print "----------------------"."\n";
+print "CLIENT_CODE -> ".$CLIENT_CODE."\n";
+print "REPORT_ALL -> ".$REPORT_ALL."\n";
+print "----------------------"."\n";
 # define different client doc type arrays
 # MSD
 my @msd_Admin_arr = ();
@@ -290,6 +297,7 @@ sub get_check_files
     #my ($check_dir_path) = @_;   
     my $check_dir_path = $_[0];
     my $SEARCH_CLIENT_CODE = $_[1];
+	my $check_file_ALL = $_[2];
     print "--------------------------"."\n";
     print "CHECKING IN DIRECTORY"."\n";
     print "--------------------------"."\n";
@@ -298,6 +306,10 @@ sub get_check_files
     print "CHECKING FOR CLIENT CODE"."\n";
     print "--------------------------"."\n";
     print $SEARCH_CLIENT_CODE."\n";
+    print "--------------------------"."\n";
+	print "CHECKING FILE ALL"."\n";
+    print "--------------------------"."\n";
+    print $check_file_ALL."\n";
     print "--------------------------"."\n";
     my @fullpath_files_list = ();
     #my ($check_dir_path) = $_[0];
@@ -341,16 +353,40 @@ sub get_check_files
               #print "--------------------------"."\n";
 
               my $REPORT_CLIENT_CODE_STR = '_'.$SEARCH_CLIENT_CODE.'_';
+			  my $REPORT_ALL_STR = '_'.$check_file_ALL.'_';
+			  print "--------------------------"."\n";
+              print ("REPORT_CLIENT_CODE_STR -> $REPORT_CLIENT_CODE_STR"."\n");
+              print "--------------------------"."\n";
+			  print ("REPORT_ALL_STR -> $REPORT_ALL_STR"."\n");
+              print "--------------------------"."\n";
               if (IsStringContains($filename, $REPORT_CLIENT_CODE_STR) == 1)
               {
-                print "--------------------------"."\n";
-                print ("[ $SEARCH_CLIENT_CODE ] REPORT FILE -> $filename\n");
-                print "--------------------------"."\n";
-                if (-f $fullpath_file)
-                {
-                  push (@fullpath_files_list, $fullpath_file);
-                }
+				print "--------------------------"."\n";
+				print ("[ $SEARCH_CLIENT_CODE ] REPORT FILE -> $filename\n");
+				print "--------------------------"."\n";
+				if (-f $fullpath_file)
+				{
+				  push (@fullpath_files_list, $fullpath_file);
+				}
               }
+			  else
+			  {
+			      if (IsStringContains($filename, $REPORT_ALL_STR) == 1)
+				  {
+					print "--------------------------"."\n";
+					print ("[ $check_file_ALL ] REPORT FILE -> $filename\n");
+					print "--------------------------"."\n";
+					if (-f $fullpath_file)
+					{
+						print "--------------------------"."\n";
+						print "FOUND REPORT FOR ALL"."\n";
+						print "--------------------------"."\n";
+						print $fullpath_file."\n";
+						print "--------------------------"."\n";
+						#push (@fullpath_files_list, $fullpath_file);
+					}
+				  }
+			  }
             }
           }
         }
@@ -418,7 +454,7 @@ print "--------------------------"."\n";
 print $reports_dir."\n";
 print "--------------------------"."\n";
 my $CHECK_DIR = Trim($reports_dir);      
-my @report_files_arr = get_check_files($CHECK_DIR, $CLIENT_CODE);
+my @report_files_arr = get_check_files($CHECK_DIR, $CLIENT_CODE, $REPORT_ALL);
 foreach my $report_file (@report_files_arr)
 {
 	print "--------------------------"."\n";
