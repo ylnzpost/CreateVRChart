@@ -202,6 +202,51 @@ sub process_file_data {
 	close FILE_DATA;
 }
 
+sub process_ALL_file_data {
+	my $filename = $_[0];
+	
+	my $report_name = basename($filename, ".report");
+	my $date_range = substr($report_name, 0, 21);
+	print "--------------------------"."\n";
+	print "[ DATE RANGE ]"."\n";
+	print "--------------------------"."\n";
+	print $date_range."\n";
+	print "--------------------------"."\n";
+	push(@REPORT_DATES, $date_range);
+	
+	# use the perl open function to open the file
+	open(FILE_DATA, $filename) or die "Could not read from $filename, open file failed.";
+
+	my @fields_arr;
+	my @data_arr;
+	my $line;
+
+	while(<FILE_DATA>){
+		chomp;
+		$line = $_;
+		@fields_arr = split(/\|/, $line);
+		print Dumper \@fields_arr;
+		my $CLIENT_CODE_VAL;
+		my $DOC_TYPE_VAL;
+		my $BYTES_VAL;
+		
+		print "--------------------------"."\n";
+		print "[ SINGLE RECORD IN ALL REPORT FILE ]"."\n";
+		print "--------------------------"."\n";
+		print "{ START }"."\n";
+		foreach my $one_field (@fields_arr){
+		  print "FIELD VALUE: ".$one_field."\n";
+		  $CLIENT_CODE_VAL = $fields_arr[0];
+		  $DOC_TYPE_VAL = $fields_arr[1];
+		  $BYTES_VAL = $fields_arr[5];
+		}
+		#load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
+		print "{ END }"."\n";
+		print "--------------------------"."\n";
+	}
+	close FILE_DATA;
+}
+
 sub load_data {
 	my $clientcode = $_[0];
 	my $doctype = $_[1];
@@ -351,8 +396,10 @@ sub get_check_files
               #print "--------------------------"."\n";
               print ("REPORT FILE -> $filename\n");
               #print "--------------------------"."\n";
-
+			  
+			  # this is only for client codes (MSD, MNRG, STHX, FONT, TCL, BNZ) showing in report file name
               my $REPORT_CLIENT_CODE_STR = '_'.$SEARCH_CLIENT_CODE.'_';
+			  # most clients are in ALL report file
 			  my $REPORT_ALL_STR = '_'.$check_file_ALL.'_';
 			  print "--------------------------"."\n";
               print ("REPORT_CLIENT_CODE_STR -> $REPORT_CLIENT_CODE_STR"."\n");
@@ -361,9 +408,9 @@ sub get_check_files
               print "--------------------------"."\n";
               if (IsStringContains($filename, $REPORT_CLIENT_CODE_STR) == 1)
               {
-				print "--------------------------"."\n";
-				print ("[ $SEARCH_CLIENT_CODE ] REPORT FILE -> $filename\n");
-				print "--------------------------"."\n";
+				#print "--------------------------"."\n";
+				#print ("[ $SEARCH_CLIENT_CODE ] REPORT FILE -> $filename\n");
+				#print "--------------------------"."\n";
 				if (-f $fullpath_file)
 				{
 				  push (@fullpath_files_list, $fullpath_file);
@@ -373,9 +420,9 @@ sub get_check_files
 			  {
 			      if (IsStringContains($filename, $REPORT_ALL_STR) == 1)
 				  {
-					print "--------------------------"."\n";
-					print ("[ $check_file_ALL ] REPORT FILE -> $filename\n");
-					print "--------------------------"."\n";
+					#print "--------------------------"."\n";
+					#print ("[ $check_file_ALL ] REPORT FILE -> $filename\n");
+					#print "--------------------------"."\n";
 					if (-f $fullpath_file)
 					{
 						print "--------------------------"."\n";
@@ -383,7 +430,7 @@ sub get_check_files
 						print "--------------------------"."\n";
 						print $fullpath_file."\n";
 						print "--------------------------"."\n";
-						#push (@fullpath_files_list, $fullpath_file);
+						push (@fullpath_files_list, $fullpath_file);
 					}
 				  }
 			  }
@@ -429,7 +476,7 @@ sub StringContains
 	my $string = $_[0];
 	my $substring = $_[1];
 	if (index($string, $substring) != -1) {
-	print $string." contains ".$substring."\n";
+		print $string." contains ".$substring."\n";
 	}
 }
 
@@ -438,7 +485,7 @@ sub IsStringContains
 	my $string = $_[0];
 	my $substring = $_[1];
 	if (index($string, $substring) != -1) {
-	return 1;
+		return 1;
 	}
 	return 0;
 }
@@ -455,99 +502,123 @@ print $reports_dir."\n";
 print "--------------------------"."\n";
 my $CHECK_DIR = Trim($reports_dir);      
 my @report_files_arr = get_check_files($CHECK_DIR, $CLIENT_CODE, $REPORT_ALL);
-foreach my $report_file (@report_files_arr)
+
+LABEL_PROCESS_FILES:
 {
-	print "--------------------------"."\n";
-	print "PROCESSING REPORT FILE"."\n";
-	print "--------------------------"."\n";
-	print $report_file."\n";
-	print "--------------------------"."\n";
-	process_file_data($report_file);
-	print "--------------------------"."\n";
-	print "[ msd_Admin_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@msd_Admin_arr){
-		print $one_item."\n";
+	foreach my $key (@CLIENTS_ARR) 
+	{
+		if ($key eq $CLIENT_CODE_ARG)
+		{
+			foreach my $report_file (@report_files_arr)
+			{
+				print "--------------------------"."\n";
+				print "PROCESSING REPORT FILE"."\n";
+				print "--------------------------"."\n";
+				print $report_file."\n";
+				print "--------------------------"."\n";
+				process_file_data($report_file);
+				print "--------------------------"."\n";
+				print "[ msd_Admin_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@msd_Admin_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ msd_StudyLink_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@msd_StudyLink_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ msd_WorkAndIncome_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@msd_WorkAndIncome_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_BRRS_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_BRRS_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_CareAdvantage_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_CareAdvantage_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_AP_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_AP_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_Agency_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_Agency_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_RSP_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_RSP_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ sthx_SouthernCross_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@sthx_SouthernCross_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ mnrg_RSP_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@mnrg_RSP_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ mnrg_Meridian_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@mnrg_Meridian_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ font_HRDocuments_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@font_HRDocuments_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ font_SupplierDocumentsRSP_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@font_SupplierDocumentsRSP_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+				print "[ font_SupplierDocuments_arr ]"."\n";
+				print "--------------------------"."\n";
+				foreach my $one_item (@font_SupplierDocuments_arr){
+					print $one_item."\n";
+				}
+				print "--------------------------"."\n";
+			}
+			last LABEL_PROCESS_FILES;
+		}
+		else
+		{
+			foreach my $report_ALL_file (@report_files_arr)
+			{
+				print "--------------------------"."\n";
+				print "PROCESSING [ ALL ] REPORT FILE"."\n";
+				print "--------------------------"."\n";
+				print $report_ALL_file."\n";
+				print "--------------------------"."\n";
+				#process for ALL report file
+				process_ALL_file_data($report_ALL_file);
+			}
+		}
 	}
-	print "--------------------------"."\n";
-	print "[ msd_StudyLink_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@msd_StudyLink_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ msd_WorkAndIncome_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@msd_WorkAndIncome_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_BRRS_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_BRRS_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_CareAdvantage_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_CareAdvantage_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_AP_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_AP_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_Agency_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_Agency_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_RSP_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_RSP_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ sthx_SouthernCross_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@sthx_SouthernCross_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ mnrg_RSP_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@mnrg_RSP_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ mnrg_Meridian_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@mnrg_Meridian_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ font_HRDocuments_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@font_HRDocuments_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ font_SupplierDocumentsRSP_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@font_SupplierDocumentsRSP_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
-	print "[ font_SupplierDocuments_arr ]"."\n";
-	print "--------------------------"."\n";
-	foreach my $one_item (@font_SupplierDocuments_arr){
-		print $one_item."\n";
-	}
-	print "--------------------------"."\n";
 }
 
 #foreach (@report_files_arr) 
