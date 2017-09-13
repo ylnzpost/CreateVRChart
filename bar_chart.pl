@@ -225,11 +225,18 @@ sub process_ALL_file_data {
 		chomp;
 		$line = $_;
 		@fields_arr = split(/\|/, $line);
-		print Dumper \@fields_arr;
+		#print Dumper \@fields_arr;
 		my $CLIENT_CODE_VAL;
 		my $DOC_TYPE_VAL;
 		my $BYTES_VAL;
 		
+		foreach my $one_field (@fields_arr){
+			#print "FIELD VALUE: ".$one_field."\n";
+			$CLIENT_CODE_VAL = $fields_arr[0];
+			$DOC_TYPE_VAL = $fields_arr[1];
+			$BYTES_VAL = $fields_arr[5];
+		}
+=start
 		print "--------------------------"."\n";
 		print "[ SINGLE RECORD IN ALL REPORT FILE ]"."\n";
 		print "--------------------------"."\n";
@@ -240,9 +247,27 @@ sub process_ALL_file_data {
 		  $DOC_TYPE_VAL = $fields_arr[1];
 		  $BYTES_VAL = $fields_arr[5];
 		}
-		#load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
 		print "{ END }"."\n";
 		print "--------------------------"."\n";
+=cut
+		if ($CLIENT_CODE eq $CLIENT_CODE_VAL)
+		{
+			print "--------------------------"."\n";
+			print "[ SINGLE RECORD IN ALL REPORT FILE ]"."\n";
+			print "--------------------------"."\n";
+			print "{ START }"."\n";
+			foreach my $one_field (@fields_arr){
+			  print "FIELD VALUE: ".$one_field."\n";
+			  $CLIENT_CODE_VAL = $fields_arr[0];
+			  $DOC_TYPE_VAL = $fields_arr[1];
+			  $BYTES_VAL = $fields_arr[5];
+			}
+			print "{ END }"."\n";
+			print "--------------------------"."\n";
+			print "FOUND -> "."[ "."THIS IS $CLIENT_CODE RECORD"." ]"."\n";
+			print "--------------------------"."\n\n";
+			#load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
+		}
 	}
 	close FILE_DATA;
 }
