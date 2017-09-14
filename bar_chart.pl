@@ -797,7 +797,9 @@ elsif ($CLIENT_CODE eq "FONT")
 		("HR Documents", "Supplier Documents RSP", "Supplier Documents");
 }
 else
-{}
+{
+	require "./bar_chart_for_ALL.pl";
+}
 
 my $gd = $graph->plot(\@data) or die $graph->error;
 my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
