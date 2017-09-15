@@ -13,6 +13,8 @@ use POSIX qw(floor ceil);
 #use POSIX qw(ceil);
 use Data::Dumper qw(Dumper);
 use Cwd;
+# Require another Perl
+require "./bar_chart_for_ALL.pl";
 
 # define ARGUMENTS passed from PERL command
 my ($CLIENT_CODE_ARG, $REPORT_ALL_ARG) = @ARGV;
@@ -358,7 +360,9 @@ sub load_data {
 
 	}
 	else
-	{}
+	{
+		#for ALL report file
+	}
 }
 
 sub get_check_files 
@@ -798,7 +802,7 @@ elsif ($CLIENT_CODE eq "FONT")
 }
 else
 {
-	require "./bar_chart_for_ALL.pl";
+	#for ALL report file
 }
 
 my $gd = $graph->plot(\@data) or die $graph->error;
