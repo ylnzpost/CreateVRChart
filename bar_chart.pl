@@ -255,6 +255,8 @@ sub process_ALL_file_data {
 		if ($CLIENT_CODE eq $CLIENT_CODE_VAL)
 		{
 			print "--------------------------"."\n";
+			print "FOUND -> "."[ "."THIS IS "."{ ".$CLIENT_CODE." }"." RECORD"." ]"."\n";
+			print "--------------------------"."\n";
 			print "[ SINGLE RECORD IN ALL REPORT FILE ]"."\n";
 			print "--------------------------"."\n";
 			print "{ START }"."\n";
@@ -265,10 +267,8 @@ sub process_ALL_file_data {
 			  $BYTES_VAL = $fields_arr[5];
 			}
 			print "{ END }"."\n";
-			print "--------------------------"."\n";
-			print "FOUND -> "."[ "."THIS IS $CLIENT_CODE RECORD"." ]"."\n";
 			print "--------------------------"."\n\n";
-			#load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
+			load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
 		}
 	}
 	close FILE_DATA;
@@ -362,6 +362,7 @@ sub load_data {
 	else
 	{
 		#for ALL report file
+		load_data_for_all($clientcode, $doctype, $value);
 	}
 }
 
