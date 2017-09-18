@@ -9,6 +9,20 @@ $report_all_data_labels_arr_matrix = [];
 print "--------------------------"."\n";
 print "REQUIRE SUB PERL SCRIPT"."\n";
 print "--------------------------"."\n";
+
+#---------------------------------------
+# Define Graphic Object
+#---------------------------------------
+my $graph_obj = GD::Graph::bars->new(1000, 1000);
+my @graphic_colours = 
+	('blue', 
+	'green', 
+	'cyan', 
+	'yellow', 
+	'purple',
+	'orange',
+	'red',
+	'gray');
 #---------------------------------------
 # Graphic Data
 #---------------------------------------
@@ -213,7 +227,7 @@ sub set_legend_for_all {
 
 	if ($legend_clientcode eq "ANZ")
 	{
-		$graph->set_legend
+		$graph_obj->set_legend
 			(
 				"ANZ NZS", 
 				"ANZ Payment Operations", 
@@ -227,7 +241,7 @@ sub set_legend_for_all {
 	}
 	elsif ($legend_clientcode eq "GEN")
 	{
-		$graph->set_legend
+		$graph_obj->set_legend
 			(
 				"Customer Communication RSP", 
 				"Customer Communication", 

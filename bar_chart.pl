@@ -15,12 +15,12 @@ use Data::Dumper qw(Dumper);
 use Cwd;
 # Require another Perl
 #require "./bar_chart_for_ALL.pl";
-use lib qw(./Func);
-use FOR_ALL_REPORT qw(load_data_for_all set_arr_matrix_for_all set_graphic_data_for_all set_legend_for_all get_graphic_data $report_all_data_labels_arr_matrix);
-#BEGIN {
-#  require './Func/FOR_ALL_REPORT.pm';
-#  FOR_ALL_REPORT->import();
-#}
+#use lib qw(./Func);
+#use FOR_ALL_REPORT qw(load_data_for_all set_arr_matrix_for_all set_graphic_data_for_all set_legend_for_all get_graphic_data $report_all_data_labels_arr_matrix);
+BEGIN {
+  require './Func/FOR_ALL_REPORT.pm';
+  FOR_ALL_REPORT->import();
+}
 
 # define ARGUMENTS passed from PERL command
 my ($CLIENT_CODE_ARG, $REPORT_ALL_ARG) = @ARGV;
@@ -679,7 +679,7 @@ my @data;
 # -----------------------------------------------------------
 # Graphic Labels Array
 my $report_data_labels_arr_matrix = \@REPORT_DATES;
-$report_all_data_labels_arr_matrix = $report_data_labels_arr_matrix;
+our ($report_all_data_labels_arr_matrix) = $report_data_labels_arr_matrix;
 # MSD
 my $msd_Admin_arr_matrix = \@msd_Admin_arr;
 my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
