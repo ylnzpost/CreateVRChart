@@ -14,7 +14,13 @@ use POSIX qw(floor ceil);
 use Data::Dumper qw(Dumper);
 use Cwd;
 # Require another Perl
-require "./bar_chart_for_ALL.pl";
+#require "./bar_chart_for_ALL.pl";
+use lib qw(./Func);
+use FOR_ALL_REPORT qw(load_data_for_all set_arr_matrix_for_all set_graphic_data_for_all set_legend_for_all get_graphic_data $report_all_data_labels_arr_matrix);
+#BEGIN {
+#  require './Func/FOR_ALL_REPORT.pm';
+#  FOR_ALL_REPORT->import();
+#}
 
 # define ARGUMENTS passed from PERL command
 my ($CLIENT_CODE_ARG, $REPORT_ALL_ARG) = @ARGV;
@@ -66,6 +72,7 @@ my @MNRG_DOC_TYPES = ("Meridian RSP", "Meridian");
 my @STHX_DOC_TYPES = ("BRRS", "Care Advantage", "Southern Cross AP", "Southern Cross Agency", "Southern Cross RSP", "Southern Cross");
 my @REPORT_DATES = ();
 my %HASH_DOC_TYPES=("MSD" => [@MSD_DOC_TYPES], "MNRG" => [@MNRG_DOC_TYPES], "STHX" => [@STHX_DOC_TYPES]);
+
 =start
 foreach my $key (@CLIENTS_ARR) 
 {
@@ -670,7 +677,9 @@ my @data;
 # -----------------------------------------------------------
 # different clients
 # -----------------------------------------------------------
+# Graphic Labels Array
 my $report_data_labels_arr_matrix = \@REPORT_DATES;
+$report_all_data_labels_arr_matrix = $report_data_labels_arr_matrix;
 # MSD
 my $msd_Admin_arr_matrix = \@msd_Admin_arr;
 my $msd_StudyLink_arr_matrix = \@msd_StudyLink_arr;
@@ -689,6 +698,8 @@ my $mnrg_Meridian_arr_matrix = \@mnrg_Meridian_arr;
 my $font_HRDocuments_arr_matrix = \@font_HRDocuments_arr;
 my $font_SupplierDocumentsRSP_arr_matrix = \@font_SupplierDocumentsRSP_arr;
 my $font_SupplierDocuments_arr_matrix = \@font_SupplierDocuments_arr;
+# OTHERS FOR ALL
+&set_arr_matrix_for_all();
 # ---------------------------------------------------------
 if ($CLIENT_CODE eq "MSD")
 {
@@ -747,7 +758,11 @@ elsif ($CLIENT_CODE eq "TCL")
 	# -----------------------------------------------------
 }
 else
-{}
+{
+	#for ALL report file
+	my $client_code_for_graphic = $CLIENT_CODE;
+	&set_graphic_data_for_all($client_code_for_graphic);
+}
 # ---------------------------------------------------------
 
 print "--------------------------"."\n";
@@ -804,10 +819,25 @@ elsif ($CLIENT_CODE eq "FONT")
 else
 {
 	#for ALL report file
+	my $client_code_for_legend = $CLIENT_CODE;
+	set_legend_for_all($client_code_for_legend);
 }
 
 my $gd = $graph->plot(\@data) or die $graph->error;
 my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
+
+#--------------------------------------------------------
+# Get graphic data array size for main clients (main reports)
+# -------------------------------------------------------
+my $data_arr_size = scalar(@data);
+#--------------------------------------------------------
+# Get graphic data array size for other clients (ALL report)
+# -------------------------------------------------------
+my $data_arr_size_for_all = scalar(get_graphic_data());
+#--------------------------------------------------------
+print "MAIN DATA ARRAY SIZE = $data_arr_size"."\n";
+print "OTHER (ALL REPORT) DATA ARRAY SIZE = $data_arr_size_for_all"."\n";
+#--------------------------------------------------------
 
 #open(IMG, '>msd_report_bar_chart.png') or die $!;
 #binmode IMG;
