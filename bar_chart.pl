@@ -823,9 +823,6 @@ else
 	set_legend_for_all($client_code_for_legend);
 }
 
-my $gd = $graph->plot(\@data) or die $graph->error;
-my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
-
 #--------------------------------------------------------
 # Get graphic data array size for main clients (main reports)
 # -------------------------------------------------------
@@ -835,16 +832,37 @@ my $data_arr_size = scalar(@data);
 # -------------------------------------------------------
 my $data_arr_size_for_all = scalar(get_graphic_data());
 #--------------------------------------------------------
-print "MAIN DATA ARRAY SIZE = $data_arr_size"."\n";
-print "OTHER (ALL REPORT) DATA ARRAY SIZE = $data_arr_size_for_all"."\n";
+print "MAIN DATA ARRAY SIZE IS $data_arr_size"."\n";
+print "OTHER (ALL REPORT) DATA ARRAY SIZE IS $data_arr_size_for_all"."\n";
 #--------------------------------------------------------
+if ($data_arr_size > 0)
+{
+	#graphic image for main client
+	print "GENERATING GRAPHIC IMAGE FOR ".$CLIENT_CODE." ..."."\n";
+	print "GRAPHIC IMAGE FOR CLIENT FROM ALL REPORT FILE"."\n";
+		
+	my $gd = $graph->plot(\@data) or die $graph->error;
+	my $IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
 
-#open(IMG, '>msd_report_bar_chart.png') or die $!;
-#binmode IMG;
-#print IMG $gd->png;
-#close IMG;
+	#open(IMG, '>msd_report_bar_chart.png') or die $!;
+	#binmode IMG;
+	#print IMG $gd->png;
+	#close IMG;
 
-open(my $IMAGE_OUT, '>', $IMAGE_FILE) or die "Cannot open ".$IMAGE_FILE." for write: $!";
-binmode $IMAGE_OUT;
-print $IMAGE_OUT $graph->gd->png;
-close $IMAGE_OUT;
+	open(my $IMAGE_OUT, '>', $IMAGE_FILE) or die "Cannot open ".$IMAGE_FILE." for write: $!";
+	binmode $IMAGE_OUT;
+	print $IMAGE_OUT $graph->gd->png;
+	close $IMAGE_OUT;
+}
+else
+{
+	if ($data_arr_size_for_all > 0)
+	{
+		#graphic image for client from ALL report
+		print "GENERATING GRAPHIC IMAGE FOR CLIENT FROM ALL REPORT FILE ..."."\n";
+	}
+	else
+	{
+		#invalid - error
+	}
+}
