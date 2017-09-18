@@ -16,7 +16,7 @@ use Cwd;
 # Require another Perl
 #require "./bar_chart_for_ALL.pl";
 #use lib qw(./Func);
-#use FOR_ALL_REPORT qw(load_data_for_all set_arr_matrix_for_all set_graphic_data_for_all set_legend_for_all get_graphic_data $report_all_data_labels_arr_matrix);
+#use FOR_ALL_REPORT qw(load_data_for_all set_arr_matrix_for_all set_graphic_data_for_all set_legend_for_all get_graphic_data $report_all_data_labels_arr_matrix $graph_obj);
 BEGIN {
   require './Func/FOR_ALL_REPORT.pm';
   FOR_ALL_REPORT->import();
@@ -274,8 +274,9 @@ sub process_ALL_file_data {
 			  $BYTES_VAL = $fields_arr[5];
 			}
 			print "{ END }"."\n";
-			print "--------------------------"."\n\n";
+			print "--------------------------"."\n";
 			load_data($CLIENT_CODE_VAL, $DOC_TYPE_VAL, convert_bytes_roundup($BYTES_VAL));
+			print "--------------------------"."\n";
 		}
 	}
 	close FILE_DATA;
@@ -285,6 +286,13 @@ sub load_data {
 	my $clientcode = $_[0];
 	my $doctype = $_[1];
 	my $value = $_[2];
+	print "-------------------------"."\n";
+	print "LOADING DATA FOR $clientcode"."\n";
+	print "-------------------------"."\n";
+	print $clientcode."\n";
+	print $doctype."\n";
+	print $value."\n";
+	print "-------------------------"."\n\n";
 
 	if ($clientcode eq "MSD")
 	{
@@ -540,119 +548,133 @@ print "--------------------------"."\n";
 my $CHECK_DIR = Trim($reports_dir);      
 my @report_files_arr = get_check_files($CHECK_DIR, $CLIENT_CODE, $REPORT_ALL);
 
-LABEL_PROCESS_FILES:
+if ($REPORT_ALL eq "ALL")
 {
-	foreach my $key (@CLIENTS_ARR) 
+	print "--------------------------"."\n";
+	print "START PROCESSING FOR ALL REPORT FILE"."\n";
+	print "--------------------------"."\n";
+	#for client from ALL report
+	foreach my $report_ALL_file (@report_files_arr)
 	{
-		if ($key eq $CLIENT_CODE_ARG)
+		print "--------------------------"."\n";
+		print "PROCESSING [ ALL ] REPORT FILE"."\n";
+		print "--------------------------"."\n";
+		print $report_ALL_file."\n";
+		print "--------------------------"."\n";
+		#process for ALL report file
+		process_ALL_file_data($report_ALL_file);
+	}
+}
+else
+{
+	print "--------------------------"."\n";
+	print "START PROCESSING FOR MAIN REPORT FILE"."\n";
+	print "--------------------------"."\n";
+	#for MAIN reports
+	LABEL_PROCESS_FILES:
+	{
+		foreach my $key (@CLIENTS_ARR) 
 		{
-			foreach my $report_file (@report_files_arr)
+			if ($key eq $CLIENT_CODE_ARG)
 			{
-				print "--------------------------"."\n";
-				print "PROCESSING REPORT FILE"."\n";
-				print "--------------------------"."\n";
-				print $report_file."\n";
-				print "--------------------------"."\n";
-				process_file_data($report_file);
-				print "--------------------------"."\n";
-				print "[ msd_Admin_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@msd_Admin_arr){
-					print $one_item."\n";
+				foreach my $report_file (@report_files_arr)
+				{
+					print "--------------------------"."\n";
+					print "PROCESSING REPORT FILE"."\n";
+					print "--------------------------"."\n";
+					print $report_file."\n";
+					print "--------------------------"."\n";
+					process_file_data($report_file);
+					print "--------------------------"."\n";
+					print "[ msd_Admin_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@msd_Admin_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ msd_StudyLink_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@msd_StudyLink_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ msd_WorkAndIncome_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@msd_WorkAndIncome_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_BRRS_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_BRRS_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_CareAdvantage_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_CareAdvantage_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_AP_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_AP_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_Agency_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_Agency_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_RSP_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_RSP_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ sthx_SouthernCross_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@sthx_SouthernCross_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ mnrg_RSP_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@mnrg_RSP_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ mnrg_Meridian_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@mnrg_Meridian_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ font_HRDocuments_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@font_HRDocuments_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ font_SupplierDocumentsRSP_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@font_SupplierDocumentsRSP_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
+					print "[ font_SupplierDocuments_arr ]"."\n";
+					print "--------------------------"."\n";
+					foreach my $one_item (@font_SupplierDocuments_arr){
+						print $one_item."\n";
+					}
+					print "--------------------------"."\n";
 				}
-				print "--------------------------"."\n";
-				print "[ msd_StudyLink_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@msd_StudyLink_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ msd_WorkAndIncome_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@msd_WorkAndIncome_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_BRRS_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_BRRS_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_CareAdvantage_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_CareAdvantage_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_AP_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_AP_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_Agency_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_Agency_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_RSP_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_RSP_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ sthx_SouthernCross_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@sthx_SouthernCross_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ mnrg_RSP_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@mnrg_RSP_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ mnrg_Meridian_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@mnrg_Meridian_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ font_HRDocuments_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@font_HRDocuments_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ font_SupplierDocumentsRSP_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@font_SupplierDocumentsRSP_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
-				print "[ font_SupplierDocuments_arr ]"."\n";
-				print "--------------------------"."\n";
-				foreach my $one_item (@font_SupplierDocuments_arr){
-					print $one_item."\n";
-				}
-				print "--------------------------"."\n";
+				last LABEL_PROCESS_FILES;
 			}
-			last LABEL_PROCESS_FILES;
-		}
-		else
-		{
-			foreach my $report_ALL_file (@report_files_arr)
+			else
 			{
-				print "--------------------------"."\n";
-				print "PROCESSING [ ALL ] REPORT FILE"."\n";
-				print "--------------------------"."\n";
-				print $report_ALL_file."\n";
-				print "--------------------------"."\n";
-				#process for ALL report file
-				process_ALL_file_data($report_ALL_file);
 			}
 		}
 	}
@@ -699,7 +721,7 @@ my $font_HRDocuments_arr_matrix = \@font_HRDocuments_arr;
 my $font_SupplierDocumentsRSP_arr_matrix = \@font_SupplierDocumentsRSP_arr;
 my $font_SupplierDocuments_arr_matrix = \@font_SupplierDocuments_arr;
 # OTHERS FOR ALL
-&set_arr_matrix_for_all();
+set_arr_matrix_for_all();
 # ---------------------------------------------------------
 if ($CLIENT_CODE eq "MSD")
 {
@@ -761,7 +783,7 @@ else
 {
 	#for ALL report file
 	my $client_code_for_graphic = $CLIENT_CODE;
-	&set_graphic_data_for_all($client_code_for_graphic);
+	set_graphic_data_for_all($client_code_for_graphic);
 }
 # ---------------------------------------------------------
 
@@ -860,6 +882,22 @@ else
 	{
 		#graphic image for client from ALL report
 		print "GENERATING GRAPHIC IMAGE FOR CLIENT FROM ALL REPORT FILE ..."."\n";
+		
+		my @graphic_data_arr = get_graphic_data();
+		print "----------------------"."\n";
+		foreach my $item (@graphic_data_arr)
+		{
+			print "ITEM VALUE: ".$item."\n";
+		}
+		print "----------------------"."\n";
+		
+		my $gd_obj = our ($graph_obj)->plot(\@graphic_data_arr) or die our ($graph_obj)->error;
+		my $CLIENT_IMAGE_FILE = $CLIENT_CODE."_report_bar_chart.png";
+		
+		open(my $CLIENT_IMAGE_OUT, '>', $CLIENT_IMAGE_FILE) or die "Cannot open ".$CLIENT_IMAGE_FILE." for write: $!";
+		binmode $CLIENT_IMAGE_OUT;
+		print $CLIENT_IMAGE_OUT our ($graph_obj)->gd->png;
+		close $CLIENT_IMAGE_OUT;
 	}
 	else
 	{
