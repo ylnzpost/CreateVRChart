@@ -286,6 +286,7 @@ sub load_data {
 	my $clientcode = $_[0];
 	my $doctype = $_[1];
 	my $value = $_[2];
+	
 	print "-------------------------"."\n";
 	print "LOADING DATA FOR $clientcode"."\n";
 	print "-------------------------"."\n";

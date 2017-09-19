@@ -76,20 +76,20 @@ my @gen_Template_arr = ();
 # for graphic data
 #---------------------------------------
 # ANZ
-my $anz_ANZNZS_arr_matrix;
-my $anz_ANZPaymentOperations_arr_matrix;
-my $anz_ANZSecurities_arr_matrix;
-my $anz_AccountsPayable_arr_matrix;
-my $anz_CardSupport_arr_matrix;
-my $anz_CompensationCoupons_arr_matrix;
-my $anz_ConsumerFinance_arr_matrix;
-my $anz_RetailPayments_arr_matrix;
+my $anz_ANZNZS_arr_matrix = [];
+my $anz_ANZPaymentOperations_arr_matrix = [];
+my $anz_ANZSecurities_arr_matrix = [];
+my $anz_AccountsPayable_arr_matrix = [];
+my $anz_CardSupport_arr_matrix = [];
+my $anz_CompensationCoupons_arr_matrix = [];
+my $anz_ConsumerFinance_arr_matrix = [];
+my $anz_RetailPayments_arr_matrix = [];
 # GEN
-my $gen_CustomerCommunicationRSP_arr_matrix;
-my $gen_CustomerCommunication_arr_matrix;
-my $gen_InstallationDocument_arr_matrix;
-my $gen_PaymentPreference_arr_matrix;
-my $gen_Template_arr_matrix;
+my $gen_CustomerCommunicationRSP_arr_matrix = [];
+my $gen_CustomerCommunication_arr_matrix = [];
+my $gen_InstallationDocument_arr_matrix = [];
+my $gen_PaymentPreference_arr_matrix = [];
+my $gen_Template_arr_matrix  = [];
 #---------------------------------------
 sub load_data_for_all {
 	my $data_clientcode = $_[0];
@@ -143,16 +143,26 @@ sub load_data_for_all {
 	}
 	elsif ($data_clientcode eq "GEN")
 	{
+		#--------------------------
+		#TEST
+		#--------------------------
+		#print "IN [ load_data_for_all ] SUB"."\n";
+		#print $doctype."\n";
+		#print $value."\n";
+		#--------------------------
 		if ($doctype eq "Customer Communication RSP")
 		{
+			#print "IN { Customer Communication RSP }"."\n";
 			push (@gen_CustomerCommunicationRSP_arr, $value);
 		}
 		elsif ($doctype eq "Customer Communication")
 		{
+			#print "IN { Customer Communication }"."\n";
 			push (@gen_CustomerCommunication_arr, $value);
 		}
 		elsif ($doctype eq "Installation Document")
 		{
+			#print "IN { Installation Document }"."\n";
 			push (@gen_InstallationDocument_arr, $value);
 		}
 		elsif ($doctype eq "Payment Preference")
@@ -173,20 +183,20 @@ sub load_data_for_all {
 
 sub set_arr_matrix_for_all {
 	# ANZ
-	my $anz_ANZNZS_arr_matrix = \@anz_ANZNZS_arr;
-	my $anz_ANZPaymentOperations_arr_matrix = \@anz_ANZPaymentOperations_arr;
-	my $anz_ANZSecurities_arr_matrix = \@anz_ANZSecurities_arr;
-	my $anz_AccountsPayable_arr_matrix = \@anz_AccountsPayable_arr;
-	my $anz_CardSupport_arr_matrix = \@anz_CardSupport_arr;
-	my $anz_CompensationCoupons_arr_matrix = \@anz_CompensationCoupons_arr;
-	my $anz_ConsumerFinance_arr_matrix = \@anz_ConsumerFinance_arr;
-	my $anz_RetailPayments_arr_matrix = \@anz_RetailPayments_arr;
+	$anz_ANZNZS_arr_matrix = \@anz_ANZNZS_arr;
+	$anz_ANZPaymentOperations_arr_matrix = \@anz_ANZPaymentOperations_arr;
+	$anz_ANZSecurities_arr_matrix = \@anz_ANZSecurities_arr;
+	$anz_AccountsPayable_arr_matrix = \@anz_AccountsPayable_arr;
+	$anz_CardSupport_arr_matrix = \@anz_CardSupport_arr;
+	$anz_CompensationCoupons_arr_matrix = \@anz_CompensationCoupons_arr;
+	$anz_ConsumerFinance_arr_matrix = \@anz_ConsumerFinance_arr;
+	$anz_RetailPayments_arr_matrix = \@anz_RetailPayments_arr;
 	# GEN
-	my $gen_CustomerCommunicationRSP_arr_matrix = \@gen_CustomerCommunicationRSP_arr;
-	my $gen_CustomerCommunication_arr_matrix = \@gen_CustomerCommunication_arr;
-	my $gen_InstallationDocument_arr_matrix = \@gen_InstallationDocument_arr;
-	my $gen_PaymentPreference_arr_matrix = \@gen_PaymentPreference_arr;
-	my $gen_Template_arr_matrix = \@gen_Template_arr;
+	$gen_CustomerCommunicationRSP_arr_matrix = \@gen_CustomerCommunicationRSP_arr;
+	$gen_CustomerCommunication_arr_matrix = \@gen_CustomerCommunication_arr;
+	$gen_InstallationDocument_arr_matrix = \@gen_InstallationDocument_arr;
+	$gen_PaymentPreference_arr_matrix = \@gen_PaymentPreference_arr;
+	$gen_Template_arr_matrix = \@gen_Template_arr;
 }
 
 sub set_graphic_data_for_all {
