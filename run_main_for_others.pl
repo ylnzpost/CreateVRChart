@@ -7,7 +7,7 @@ use IPC::System::Simple qw(system systemx capture capturex);
 # Genesis, Vero, Vodafone, Fleet Holdings, NZPost, Yellow Pages, Co-operative Bank
 # Kiwibank, Humes Pipeline Systems, Converga Group, Converga Pty, NZEI Te Riu Roa
 #---------------------------------------------------------------
-my @args = ("ANZ", "GEN", "VERO", "FLTP", "NZP", "YPG", "KWBK", "HUME", "NZEI");
+my @args = ("ANZ", "GEN", "VERO", "FLTP", "NZP", "YPG", "KWBK", "HUME");
 #----------------------------------------------------------------
 # Command Example => perl bar_chart.pl ANZ ALL
 #----------------------------------------------------------------

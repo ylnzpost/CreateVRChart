@@ -31,6 +31,10 @@ my @graphic_data;
 #---------------------------------------
 # Clients for ALL report
 #---------------------------------------
+# This is not in use 
+# because we pass client code as args
+# in command line when running the script
+#---------------------------------------
 my @ALL_CLIENTS_ARR = ("GEN", "ANZ");
 #---------------------------------------
 # ANZ
@@ -73,6 +77,80 @@ my @gen_InstallationDocument_arr = ();
 my @gen_PaymentPreference_arr = ();
 my @gen_Template_arr = ();
 #---------------------------------------
+# VERO
+#---------------------------------------
+my @VERO_DOC_TYPES = 
+	(
+		"Brokers", 
+		"Vero"
+	);
+
+my @vero_Brokers_arr = ();
+my @vero_Vero_arr = ();
+#---------------------------------------
+# FLTP
+#---------------------------------------
+my @FLTP_DOC_TYPES = 
+	(
+		"Customer Reports", 
+		"FPAU Scanning",
+		"FPAU",
+		"FPNZ Scanning",
+		"FPNZ",
+		"Merchant Reports"
+	);
+
+my @fltp_CustomerReports_arr = ();
+my @fltp_FPAUScanning_arr = ();
+my @fltp_FPAU_arr = ();
+my @fltp_FPNZScanning_arr = ();
+my @fltp_FPNZ_arr = ();
+my @fltp_MerchantReportsg_arr = ();
+#---------------------------------------
+# NZP
+#---------------------------------------
+my @NZP_DOC_TYPES = 
+	(
+		"NZ Post CAS", 
+		"NZ Post CMS"
+	);
+
+my @nzp_cas_arr = ();
+my @nzp_cms_arr = ();
+#---------------------------------------
+# YPG
+#---------------------------------------
+my @YPG_DOC_TYPES = 
+	(
+		"Statement Invoices RSP", 
+		"Statement Invoices"
+	);
+
+my @ypg_StatementInvoicesRSP_arr = ();
+my @ypg_StatementInvoices_arr = ();
+#---------------------------------------
+# KWBK
+#---------------------------------------
+my @KWBK_DOC_TYPES = 
+	(
+		"Payment Services", 
+		"Personal Finance"
+	);
+
+my @kwbk_PaymentServices_arr = ();
+my @kwbk_PersonalFinance_arr = ();
+#---------------------------------------
+# HUME
+#---------------------------------------
+my @HUME_DOC_TYPES = 
+	(
+		"Humes RSP", 
+		"Humes"
+	);
+
+my @hume_rsp_arr = ();
+my @hume_arr = ();
+#---------------------------------------
 # for graphic data
 #---------------------------------------
 # ANZ
@@ -90,6 +168,28 @@ my $gen_CustomerCommunication_arr_matrix = [];
 my $gen_InstallationDocument_arr_matrix = [];
 my $gen_PaymentPreference_arr_matrix = [];
 my $gen_Template_arr_matrix  = [];
+# VERO
+my $vero_Brokers_arr_matrix = [];
+my $vero_Vero_arr_matrix = [];
+# FLTP
+my $fltp_CustomerReports_arr_matrix = [];
+my $fltp_FPAUScanning_arr_matrix = [];
+my $fltp_FPAU_arr_matrix = [];
+my $fltp_FPNZScanning_arr_matrix = [];
+my $fltp_FPNZ_arr_matrix = [];
+my $fltp_MerchantReportsg_arr_matrix = [];
+# NZP
+my $nzp_cas_arr_matrix = [];
+my $nzp_cms_arr_matrix = [];
+# YPG
+my $ypg_StatementInvoicesRSP_arr_matrix = [];
+my $ypg_StatementInvoices_arr_matrix = [];
+# KWBK
+my $kwbk_PaymentServices_arr_matrix = [];
+my $kwbk_PersonalFinance_arr_matrix = [];
+# HUME
+my $hume_rsp_arr_matrix = [];
+my $hume_arr_matrix = [];
 #---------------------------------------
 sub load_data_for_all {
 	my $data_clientcode = $_[0];
@@ -176,6 +276,92 @@ sub load_data_for_all {
 		else
 		{}
 	}
+	elsif ($data_clientcode eq "VERO")
+	{
+		if ($doctype eq "Brokers")
+		{
+			push (@vero_Brokers_arr, $value);
+		}
+		elsif ($doctype eq "Vero")
+		{
+			push (@vero_Vero_arr, $value);
+		}
+		else
+		{}
+	}
+	elsif ($data_clientcode eq "FLTP")
+	{
+		if ($doctype eq "Customer Reports")
+		{
+			push (@fltp_CustomerReports_arr, $value);
+		}
+		elsif ($doctype eq "FPAU Scanning")
+		{
+			push (@fltp_FPAUScanning_arr, $value);
+		}
+		elsif ($doctype eq "FPAU")
+		{
+			push (@fltp_FPAU_arr, $value);
+		}
+		elsif ($doctype eq "FPNZ Scanning")
+		{
+			push (@fltp_FPNZScanning_arr, $value);
+		}
+		elsif ($doctype eq "FPNZ")
+		{
+			push (@fltp_FPNZ_arr, $value);
+		}
+		elsif ($doctype eq "Merchant Reports")
+		{
+			push (@fltp_MerchantReportsg_arr, $value);
+		}
+		else
+		{}
+	}
+	elsif ($data_clientcode eq "NZP")
+	{
+		if ($doctype eq "NZ Post CAS")
+		{
+			push (@nzp_cas_arr, $value);
+		}
+		elsif ($doctype eq "NZ Post CMS")
+		{
+			push (@nzp_cms_arr, $value);
+		}
+	}
+	elsif ($data_clientcode eq "YPG")
+	{
+		if ($doctype eq "Statement Invoices RSP")
+		{
+			push (@ypg_StatementInvoicesRSP_arr, $value);
+		}
+		elsif ($doctype eq "Statement Invoices")
+		{
+			push (@ypg_StatementInvoices_arr, $value);
+		}
+	}
+	elsif ($data_clientcode eq "KWBK")
+	{
+		if ($doctype eq "Payment Services")
+		{
+			push (@kwbk_PaymentServices_arr, $value);
+		}
+		elsif ($doctype eq "Personal Finance")
+		{
+			push (@kwbk_PersonalFinance_arr, $value);
+		}
+	}
+	elsif ($data_clientcode eq "HUME")
+	{
+		if ($doctype eq "Humes RSP")
+		{
+			push (@hume_rsp_arr, $value);
+		}
+		elsif ($doctype eq "Humes")
+		{
+			push (@hume_arr, $value);
+		}
+	}
 	else
 	{
 	}
@@ -197,6 +383,28 @@ sub set_arr_matrix_for_all {
 	$gen_InstallationDocument_arr_matrix = \@gen_InstallationDocument_arr;
 	$gen_PaymentPreference_arr_matrix = \@gen_PaymentPreference_arr;
 	$gen_Template_arr_matrix = \@gen_Template_arr;
+	# VERO
+	$vero_Brokers_arr_matrix = \@vero_Brokers_arr;
+	$vero_Vero_arr_matrix = \@vero_Vero_arr;
+	# FLTP
+	$fltp_CustomerReports_arr_matrix = \@fltp_CustomerReports_arr;
+	$fltp_FPAUScanning_arr_matrix = \@fltp_FPAUScanning_arr;
+	$fltp_FPAU_arr_matrix = \@fltp_FPAU_arr;
+	$fltp_FPNZScanning_arr_matrix = \@fltp_FPNZScanning_arr;
+	$fltp_FPNZ_arr_matrix = \@fltp_FPNZ_arr;
+	$fltp_MerchantReportsg_arr_matrix = \@fltp_MerchantReportsg_arr;
+	# NZP
+	$nzp_cas_arr_matrix = \@nzp_cas_arr;
+	$nzp_cms_arr_matrix = \@nzp_cms_arr;
+	# YPG
+	$ypg_StatementInvoicesRSP_arr_matrix = \@ypg_StatementInvoicesRSP_arr;
+	$ypg_StatementInvoices_arr_matrix = \@ypg_StatementInvoices_arr;
+	# KWBK
+	$kwbk_PaymentServices_arr_matrix = \@kwbk_PaymentServices_arr;
+	$kwbk_PersonalFinance_arr_matrix = \@kwbk_PersonalFinance_arr;
+	# HUME
+	$hume_rsp_arr_matrix = \@hume_rsp_arr;
+	$hume_arr_matrix = \@hume_arr;
 }
 
 sub set_graphic_data_for_all {
@@ -233,9 +441,79 @@ sub set_graphic_data_for_all {
 			$gen_Template_arr_matrix
 		);
 	}
+	elsif ($graphic_clientcode eq "VERO")
+	{
+		#-----------------------------------------------------
+		# VERO data
+		#-----------------------------------------------------
+		@graphic_data = ( 
+			$report_all_data_labels_arr_matrix,
+			$vero_Brokers_arr_matrix,
+			$vero_Vero_arr_matrix
+		);
+	}
+	elsif ($graphic_clientcode eq "FLTP")
+	{
+		#-----------------------------------------------------
+		# FLTP data
+		#-----------------------------------------------------
+		@graphic_data = ( 
+			$report_all_data_labels_arr_matrix,
+			$fltp_CustomerReports_arr_matrix,
+			$fltp_FPAUScanning_arr_matrix,
+			$fltp_FPAU_arr_matrix,
+			$fltp_FPNZScanning_arr_matrix,
+			$fltp_FPNZ_arr_matrix,
+			$fltp_MerchantReportsg_arr_matrix
+		);
+	}
+	elsif ($graphic_clientcode eq "NZP")
+	{
+		#-----------------------------------------------------
+		# NZP data
+		#-----------------------------------------------------
+		@graphic_data = (
+			$report_all_data_labels_arr_matrix,
+			$nzp_cas_arr_matrix,
+			$nzp_cms_arr_matrix
+		);
+	}
+	elsif ($graphic_clientcode eq "YPG")
+	{
+		#-----------------------------------------------------
+		# YPG data
+		#-----------------------------------------------------
+		@graphic_data = (
+			$report_all_data_labels_arr_matrix,
+			$ypg_StatementInvoicesRSP_arr_matrix,
+			$ypg_StatementInvoices_arr_matrix
+		);
+	}
+	elsif ($graphic_clientcode eq "KWBK")
+	{
+		#-----------------------------------------------------
+		# YPG data
+		#-----------------------------------------------------
+		@graphic_data = (
+			$report_all_data_labels_arr_matrix,
+			$kwbk_PaymentServices_arr_matrix,
+			$kwbk_PersonalFinance_arr_matrix
+		);
+	}
+	elsif ($graphic_clientcode eq "HUME")
+	{
+		#-----------------------------------------------------
+		# HUME data
+		#-----------------------------------------------------
+		@graphic_data = (
+			$report_all_data_labels_arr_matrix,
+			$hume_rsp_arr_matrix,
+			$hume_arr_matrix
+		);
+	}
 	else
 	{}
-	
+=start
 	#----------------------------------
 	# TEST
 	#----------------------------------
@@ -262,7 +540,14 @@ sub set_graphic_data_for_all {
 	print Dumper $gen_InstallationDocument_arr_matrix;
 	print Dumper $gen_PaymentPreference_arr_matrix;
 	print Dumper $gen_Template_arr_matrix;
+	# NZP
+	print "----------------------------"."\n";
+	print "NZP"."\n";
+	print "----------------------------"."\n";
+	print Dumper $nzp_cas_arr_matrix;
+	print Dumper $nzp_cms_arr_matrix;
 	#----------------------------------
+=cut
 }
 
 sub set_legend_for_all {
@@ -292,6 +577,58 @@ sub set_legend_for_all {
 				"Installation Document", 
 				"Payment Preference",
 				"Template"
+			);
+	}
+	elsif ($legend_clientcode eq "VERO")
+	{
+		$graph_obj->set_legend
+			(
+				"Brokers", 
+				"Vero"
+			);
+	}
+	elsif ($legend_clientcode eq "FLTP")
+	{
+		$graph_obj->set_legend
+			(
+				"Customer Reports", 
+				"FPAU Scanning",
+				"FPAU",
+				"FPNZ Scanning",
+				"FPNZ",
+				"Merchant Reports"
+			);
+	}
+	elsif ($legend_clientcode eq "NZP")
+	{
+		$graph_obj->set_legend
+			(
+				"NZ Post CAS", 
+				"NZ Post CMS"
+			);
+	}
+	elsif ($legend_clientcode eq "YPG")
+	{
+		$graph_obj->set_legend
+			(
+				"Statement Invoices RSP", 
+				"Statement Invoices"
+			);
+	}
+	elsif ($legend_clientcode eq "KWBK")
+	{
+		$graph_obj->set_legend
+			(
+				"Payment Services", 
+				"Personal Finance"
+			);
+	}
+	elsif ($legend_clientcode eq "HUME")
+	{
+		$graph_obj->set_legend
+			(
+				"Humes RSP", 
+				"Humes"
 			);
 	}
 	else
